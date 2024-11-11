@@ -9,6 +9,7 @@ module.exports = {
   redis: {
     host: process.env.REDIS_HOST || "localhost",
     port: process.env.REDIS_PORT || 637,
+    username: process.env.REDIS_USERNAME,
     password: process.env.REDIS_PASSWORD,
   },
   mqtt: {

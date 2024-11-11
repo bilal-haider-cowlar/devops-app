@@ -20,4 +20,4 @@ dist
 .env
 
 .vscode
-valkey
+valkey/valkey-data

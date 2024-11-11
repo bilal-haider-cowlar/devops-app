@@ -4,7 +4,7 @@ const config = require("../config/index");
 class RedisClient {
   constructor() {
     this.client = redis.createClient({
-      url: `redis://${config.redis.host}:${config.redis.port}`,
+      url: `redis://${config.redis.username}:${config.redis.password}@${config.redis.host}:${config.redis.port}`,
     });
 
     this.client.on("error", (error) => {
