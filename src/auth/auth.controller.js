@@ -33,6 +33,12 @@ exports.signUp = async (req, res) => {
       password: hashedPassword,
     });
 
+    await userServices.addUserInRedis(newUser.id, {
+      id: newUser.id,
+      email: newUser.email,
+      username: newUser.username,
+    });
+
     const token = createJWT({
       userId: newUser.id,
       email: newUser.email,

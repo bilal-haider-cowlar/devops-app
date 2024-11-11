@@ -6,6 +6,11 @@ module.exports = {
   appPort: process.env.PORT || 5000,
   jwtSecret: process.env.JWT_SECRET,
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1d",
+  redis: {
+    host: process.env.REDIS_HOST || "localhost",
+    port: process.env.REDIS_PORT || 637,
+    password: process.env.REDIS_PASSWORD,
+  },
   mqtt: {
     host: process.env.MQTT_HOST || "localhost",
     port: process.env.MQTT_PORT || 8080,

@@ -19,8 +19,8 @@ services:
     container_name: vernemq
     image: vernemq/vernemq
     ports:
-      - "${MQTT_WSS_PORT}:8080"
-      - "${MQTT_MQTT_PORT}:1883"
+      - "${VERNEMQ_WSS_PORT}:8080"
+      - "${VERNEMQ_MQTT_PORT}:1883"
     environment:
       - DOCKER_VERNEMQ_ACCEPT_EULA=yes
       - DOCKER_VERNEMQ_ALLOW_ANONYMOUS=on
@@ -31,6 +31,19 @@ services:
       - vernemq-data:/vernemq/data
     networks:
       devops-app:
+
+  redis-db:
+    container_name: redis-db
+    # command: valkey-server /usr/local/etc/valkey/valkey.conf --save 60 1 --loglevel warning
+    image: valkey/valkey:7.2
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+
+    volumes:
+      - ./valkey/valkey-data:/data
+      - ./valkey/users_acl:/etc/valkey
+      - ./valkey/valkey_conf:/usr/local/etc/valkey
 
   adminer:
     image: adminer:4.8.1
