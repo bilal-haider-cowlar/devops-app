@@ -15,6 +15,23 @@ services:
     networks:
       devops-app:
 
+  vernemq:
+    container_name: vernemq
+    image: vernemq/vernemq
+    ports:
+      - "${MQTT_WSS_PORT}:8080"
+      - "${MQTT_MQTT_PORT}:1883"
+    environment:
+      - DOCKER_VERNEMQ_ACCEPT_EULA=yes
+      - DOCKER_VERNEMQ_ALLOW_ANONYMOUS=on
+      - DOCKER_VERNEMQ_LISTENER.tcp.allowed_protocol_versions=3,4,5
+      - DOCKER_VERNEMQ_LISTENER.ws.allowed_protocol_versions=3,4,5
+      - DOCKER_VERNEMQ_LISTENER.wss.allowed_protocol_versions=3,4,5
+    volumes:
+      - vernemq-data:/vernemq/data
+    networks:
+      devops-app:
+
   adminer:
     image: adminer:4.8.1
     container_name: adminer
@@ -23,10 +40,11 @@ services:
       - ${ADMINER_HOST_PORT}:8080
     networks:
       devops-app:
-      
+
 networks:
   devops-app:
     name: devops-app
 
 volumes:
   mysql-data:
+  vernemq-data:
