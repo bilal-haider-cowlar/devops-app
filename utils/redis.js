@@ -34,6 +34,17 @@ class RedisClient {
       console.error("Error disconnecting from Redis:", error);
     }
   }
+
+  async healthCheck() {
+    try {
+      const pong = await this.client.ping();
+      console.log("Redis health check response:", pong);
+      return pong;
+    } catch (error) {
+      console.error("Redis health check failed:", error);
+      throw new Error("Redis health check failed");
+    }
+  }
 }
 
 const redisClient = new RedisClient();

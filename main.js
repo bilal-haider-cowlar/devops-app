@@ -1,4 +1,4 @@
-require("./models/index");
+const { sequelize } = require("./models/index");
 const config = require("./config/index");
 const express = require("express");
 const app = express();
@@ -8,6 +8,7 @@ const {
   connectMQTT,
   subscribeToTopic,
   disconnectMQTT,
+  publishMessage,
 } = require("./utils/mqtt");
 const { redisClient } = require("./utils/redis");
 const { syncUsersInRedis } = require("./src/user/user.service");
@@ -19,6 +20,23 @@ app.use("/user", userRouter);
 
 app.get("/", (req, res) => {
   res.send("App is running");
+});
+
+app.get("/health", async (req, res) => {
+  await redisClient.healthCheck();
+  await sequelize.authenticate();
+  res.send("Reddis and MYSql connections are healthy");
+});
+
+app.post("/mqtt", async (req, res) => {
+  try {
+    const { channel, message } = req.body;
+    publishMessage(channel, JSON.stringify(message));
+    res.send("Message Published");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error while publishing message");
+  }
 });
 
 connectMQTT().then(subscribeToTopic("#"));
