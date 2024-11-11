@@ -1,9 +1,19 @@
 require("./models/index");
-const models = require("./models");
-const UsersModel = models.Users;
+const config = require("./config/index");
+const express = require("express");
+const app = express();
+const authRouter = require("./src/auth/auth.route");
+const userRouter = require("./src/user/user.route");
 
-const getUsers = async () => {
-  console.log((await UsersModel.findOne()).toJSON());
-};
-getUsers();
-console.log("hello world");
+app.use(express.json());
+
+app.use("/auth", authRouter);
+app.use("/user", userRouter);
+
+app.get("/", (req, res) => {
+  res.send("App is running");
+});
+
+app.listen(config.appPort, () => {
+  console.log(`Server running on port ${config.appPort}`);
+});
