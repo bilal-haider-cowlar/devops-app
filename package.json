@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "serve": "nodemon --trace-warnings main.js",
+    "prod": "npm run db && npm run serve",
     "db": "npx sequelize-cli db:migrate",
     "lint": "prettier -c . && eslint .",
     "lint:fix": "prettier --write . && eslint . --fix"
