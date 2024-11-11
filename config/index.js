@@ -1,4 +1,6 @@
 require("dotenv").config();
+const fs = require("fs");
+const path = require("path");
 module.exports = {
   xApiKey: process.env.X_API_KEY || "",
   appUrl: process.env.APP_URL,
@@ -38,5 +40,22 @@ module.exports = {
     },
     host: process.env.DB_HOST,
     port: process.env.DB_PORT || 3306,
+    dialectOptions:
+      process.env.DB_USE_SSL_CERT_AUTH == "true"
+        ? {
+            ssl: {
+              cert: fs.readFileSync(
+                path.join(
+                  __dirname,
+                  "..",
+                  "mount",
+                  "DigiCertGlobalRootCA.crt.pem",
+                ),
+                "utf-8",
+              ),
+              rejectUnauthorized: true,
+            },
+          }
+        : {},
   },
 };
