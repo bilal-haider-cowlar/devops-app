@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  sqldb:
+    image: mysql:8
+    container_name: sqldb
+    restart: always
+    ports:
+      - "${DB_PORT}:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      devops-app:
+
+  adminer:
+    image: adminer:4.8.1
+    container_name: adminer
+    restart: always
+    ports:
+      - ${ADMINER_HOST_PORT}:8080
+    networks:
+      devops-app:
+      
+networks:
+  devops-app:
+    name: devops-app
+
+volumes:
+  mysql-data:
