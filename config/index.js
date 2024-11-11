@@ -3,6 +3,9 @@ module.exports = {
   xApiKey: process.env.X_API_KEY || "",
   appUrl: process.env.APP_URL,
   environment: process.env.NODE_ENV || "development",
+  appPort: process.env.PORT || 5000,
+  jwtSecret: process.env.JWT_SECRET,
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1d",
   development: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
