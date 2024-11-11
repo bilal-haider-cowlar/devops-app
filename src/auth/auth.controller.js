@@ -5,6 +5,7 @@ const {
   createJWT,
   comparePassword,
 } = require("../../utils/helpers");
+const { publishMessage } = require("../../utils/mqtt");
 
 exports.signUp = async (req, res) => {
   try {
@@ -37,6 +38,14 @@ exports.signUp = async (req, res) => {
       email: newUser.email,
       username: newUser.username,
     });
+
+    publishMessage(
+      `/user/${newUser.id}`,
+      JSON.stringify({
+        message: `New User ${newUser.username} Sigged Up`,
+        email: newUser.email,
+      }),
+    );
 
     return res.status(201).json({
       message: "User registered successfully",
@@ -77,6 +86,14 @@ exports.login = async (req, res) => {
       email: user.email,
       username: user.username,
     });
+
+    publishMessage(
+      `/user/${user.id}`,
+      JSON.stringify({
+        message: `User ${user.username} logged in`,
+        email: user.email,
+      }),
+    );
 
     return res.status(200).json({
       message: "Login successful",
