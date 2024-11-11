@@ -41,7 +41,7 @@ services:
       - "${REDIS_PORT}:6379"
 
     volumes:
-      - ./valkey/valkey-data:/data
+      - valkey-data:/data
       - ./valkey/users_acl:/etc/valkey
       - ./valkey/valkey_conf:/usr/local/etc/valkey
 
@@ -54,6 +54,18 @@ services:
     networks:
       devops-app:
 
+  app:
+    build: .
+    container_name: node-app
+    ports:
+      - "${PORT}:5000"
+    env_file:
+      - .env
+    depends_on:
+      - redis-db
+      - vernemq
+      - sqldb
+
 networks:
   devops-app:
     name: devops-app
@@ -61,3 +73,4 @@ networks:
 volumes:
   mysql-data:
   vernemq-data:
+  valkey-data:
