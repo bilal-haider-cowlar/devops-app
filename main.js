@@ -9,6 +9,8 @@ const {
   subscribeToTopic,
   disconnectMQTT,
 } = require("./utils/mqtt");
+const { redisClient } = require("./utils/redis");
+const { syncUsersInRedis } = require("./src/user/user.service");
 
 app.use(express.json());
 
@@ -21,10 +23,16 @@ app.get("/", (req, res) => {
 
 connectMQTT().then(subscribeToTopic("#"));
 
+redisClient.connect();
+
 process.on("SIGINT", () => {
   disconnectMQTT();
+  redisClient.disconnect();
   process.exit();
 });
-app.listen(config.appPort, () => {
-  console.log(`Server running on port ${config.appPort}`);
+
+syncUsersInRedis().then(() => {
+  app.listen(config.appPort, () => {
+    console.log(`Server running on port ${config.appPort}`);
+  });
 });

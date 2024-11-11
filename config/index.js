@@ -1,4 +1,6 @@
 require("dotenv").config();
+const fs = require("fs");
+const path = require("path");
 module.exports = {
   xApiKey: process.env.X_API_KEY || "",
   appUrl: process.env.APP_URL,
@@ -6,6 +8,12 @@ module.exports = {
   appPort: process.env.PORT || 5000,
   jwtSecret: process.env.JWT_SECRET,
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1d",
+  redis: {
+    host: process.env.REDIS_HOST || "localhost",
+    port: process.env.REDIS_PORT || 637,
+    username: process.env.REDIS_USERNAME,
+    password: process.env.REDIS_PASSWORD,
+  },
   mqtt: {
     host: process.env.MQTT_HOST || "localhost",
     port: process.env.MQTT_PORT || 8080,
@@ -32,5 +40,22 @@ module.exports = {
     },
     host: process.env.DB_HOST,
     port: process.env.DB_PORT || 3306,
+    dialectOptions:
+      process.env.DB_USE_SSL_CERT_AUTH == "true"
+        ? {
+            ssl: {
+              cert: fs.readFileSync(
+                path.join(
+                  __dirname,
+                  "..",
+                  "mount",
+                  "DigiCertGlobalRootCA.crt.pem",
+                ),
+                "utf-8",
+              ),
+              rejectUnauthorized: true,
+            },
+          }
+        : {},
   },
 };
