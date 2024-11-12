@@ -2,6 +2,7 @@ const { sequelize } = require("./models/index");
 const config = require("./config/index");
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const {
   connectMQTT,
   subscribeToTopic,
@@ -15,6 +16,7 @@ const swaggerDoc = require("./swagger");
 const { initializeRoutes } = require("./config/router");
 
 app.use(express.json());
+app.use(cors());
 const router = express.Router();
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 initializeRoutes(app, router);
