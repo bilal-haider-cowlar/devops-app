@@ -2,7 +2,7 @@ require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
 module.exports = {
-  xApiKey: process.env.X_API_KEY || "",
+  appTitle: process.env.APP_TITLE || "devops-app",
   appUrl: process.env.APP_URL,
   environment: process.env.NODE_ENV || "development",
   appPort: process.env.PORT || 5000,

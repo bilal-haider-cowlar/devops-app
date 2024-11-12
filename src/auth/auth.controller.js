@@ -8,6 +8,86 @@ const {
 const { publishMessage } = require("../../utils/mqtt");
 
 exports.signUp = async (req, res) => {
+  /**
+   * @swagger
+   * /auth/signup:
+   *   post:
+   *     summary: Sign up a new user
+   *     description: Creates a new user with the provided username, password, and email.
+   *     tags:
+   *       - Auth
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - username
+   *               - password
+   *               - email
+   *             properties:
+   *               username:
+   *                 type: string
+   *                 example: johndoe
+   *               password:
+   *                 type: string
+   *                 example: securePassword123
+   *               email:
+   *                 type: string
+   *                 format: email
+   *                 example: johndoe@example.com
+   *           examples:
+   *             validData:
+   *               summary: A valid example of a request body
+   *               value:
+   *                 username: johndoe
+   *                 password: securePassword123
+   *                 email: johndoe@example.com
+   *     responses:
+   *       201:
+   *         description: User registered successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   example: User registered successfully
+   *       400:
+   *         description: Validation error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   example: Validation failed
+   *                 errors:
+   *                   type: object
+   *                   properties:
+   *                     username:
+   *                       type: string
+   *                       example: The username field is required.
+   *                     password:
+   *                       type: string
+   *                       example: The password field is required.
+   *                     email:
+   *                       type: string
+   *                       example: The email field must be a valid email.
+   *       500:
+   *         description: Internal server error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   example: Internal server error
+   */
   try {
     const validation = new Validator(req.body, {
       username: "required",
@@ -64,6 +144,85 @@ exports.signUp = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  /**
+   * @swagger
+   * /auth/login:
+   *   post:
+   *     summary: Login a user
+   *     description: Authenticates a user with email and password, returns a JWT token if credentials are valid.
+   *     tags:
+   *       - Auth
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - email
+   *               - password
+   *             properties:
+   *               email:
+   *                 type: string
+   *                 format: email
+   *                 example: johndoe@example.com
+   *               password:
+   *                 type: string
+   *                 example: securePassword123
+   *     responses:
+   *       200:
+   *         description: Login successful
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   example: Login successful
+   *                 token:
+   *                   type: string
+   *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+   *       400:
+   *         description: Invalid credentials or missing required fields
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   example: Invalid password
+   *                 errors:
+   *                   type: object
+   *                   properties:
+   *                     email:
+   *                       type: string
+   *                       example: "The email field is required."
+   *                     password:
+   *                       type: string
+   *                       example: "The password field is required."
+   *       404:
+   *         description: User not found
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   example: User not found
+   *       500:
+   *         description: Internal server error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   example: Internal server error
+   */
   try {
     const validation = new Validator(req.body, {
       email: "required|email",
