@@ -10,7 +10,7 @@ This devops app use 3 services.
 
 
 - MYSQL for mangaging the data of the users.
-- Valkey (alternatice of redis) used for getting users data.
+- Valkey (alternate of redis) used for getting users data.
 - Vernemq as a pub sub broker for realtime messaging.  
 
 ### How to run locally

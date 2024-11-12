@@ -1,9 +1,9 @@
 const userServices = require("./user.service");
 
-exports.getAllUsers = async (req, res) => {
+exports.getUsers = async (req, res) => {
   /**
    * @swagger
-   * /user/get-all:
+   * /users:
    *   get:
    *     security:
    *      - bearerAuth: []
